@@ -1,7 +1,11 @@
 package com.chenkj.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+@Controller
 public class IndexController {
-	public static void main(String[] args) {
-		System.out.println(123);
+	@RequestMapping("/login")
+	public String login(){
+		return "login";
 	}
 }

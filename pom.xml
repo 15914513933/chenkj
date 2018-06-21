@@ -5,6 +5,10 @@
   <version>1.0</version>
   <packaging>war</packaging>
   
+  <properties>
+  	<spring.version>4.0.7.RELEASE</spring.version>
+  </properties>
+  
   <dependencies>
 	<dependency>
 	    <groupId>javax.servlet</groupId>
@@ -18,5 +22,18 @@
 	    <version>2.2</version>
 	    <scope>provided</scope>
 	</dependency>  
+	
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-web</artifactId>
+	    <version>${spring.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-webmvc</artifactId>
+	    <version>${spring.version}</version>
+	</dependency>
+	
+	
   </dependencies>
 </project>
