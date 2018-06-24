@@ -9,7 +9,7 @@ http://www.springframework.org/schema/context    http://www.springframework.org/
 http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"  
 default-lazy-init="true">  
     <mvc:annotation-driven/>
-    <context:component-scan base-package="com.chenkj.controller"/>  
+    <context:component-scan base-package="com.chenkj"/>  
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>  
         <property name="prefix" value="/pages/"/>  
