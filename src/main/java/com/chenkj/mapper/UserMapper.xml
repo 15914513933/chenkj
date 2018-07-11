@@ -3,6 +3,11 @@
    
 <mapper namespace="com.chenkj.mapper.UserMapper">  
     <insert id="insertUser">
-        insert into user(userid,password) values(#{userid},#{password})
+        insert into tuser(userid,password) values(#{userid},#{password})
     </insert>
+    
+    <!--resultType resultMap不能同时使用  -->
+    <select id="getUsers" resultType="com.chenkj.model.User">
+    	select * from tuser
+    </select>
 </mapper> 

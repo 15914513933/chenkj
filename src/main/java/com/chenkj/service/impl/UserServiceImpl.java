@@ -1,5 +1,7 @@
 package com.chenkj.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,11 @@ public class UserServiceImpl implements UserService {
 	public User insertUser(User user) {
 		userMapper.insertUser(user);
 		return user;
+	}
+	
+	@Override
+	public List<User> getUsers() {
+		return userMapper.getUsers();
 	}
 
 }
