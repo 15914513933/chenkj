@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.chenkj.service.impl.MenuServiceImpl;
 @Controller
-public class IndexController {
+@RequestMapping("/menu")
+public class MenuController {
 	@Autowired
 	private MenuServiceImpl menuService;
-	@RequestMapping("/index")
-	public String index(HttpServletRequest req, HttpServletResponse resp){
+	
+	@RequestMapping("/list")
+	public String menulist(HttpServletRequest req, HttpServletResponse resp){
 		req.setAttribute("menulist", menuService.getMenus());
-		return "admin/index";
+		return "admin/menu/menulist";
 	}
 	
 }

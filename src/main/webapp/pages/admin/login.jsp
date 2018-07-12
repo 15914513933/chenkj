@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<title>后台登录</title>
-	<link rel="stylesheet" type="text/css" href="<%=basePath%>static/admin/css/login.css" />
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>/static/admin/css/login.css" />
 </head>
 	<body>
 		<div class="m-login-bg">
@@ -26,7 +26,7 @@
 								<input type="text" name="verity" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
 							</div>
 							<div class="layui-inline">
-								<img class="verifyImg" onclick="this.src=this.src+'?c='+Math.random();" src="<%=basePath%>static/admin/images/login/yzm.jpg" />
+								<img class="verifyImg" onclick="this.src=this.src+'?c='+Math.random();" src="<%=basePath%>/static/admin/images/login/yzm.jpg" />
 							</div>
 						</div>
 						<div class="layui-form-item m-login-btn">
@@ -42,32 +42,6 @@
 				<p class="copyright">Copyright 2018 by chenkj</p>
 			</div>
 		</div>
-		<script src="<%=basePath%>layui/layui.js" type="text/javascript" charset="utf-8"></script>
-		<script>
-			layui.use(['form'], function() {
-				var form = layui.form;
-			    var layer = layui.layer;				
-				form.on('submit(login)', function(data) {
-					$.ajax({
-						  type: 'POST',
-						  url: basePath+'/user/doLogin',
-						  data: JSON.stringify(JSON.stringify(data.field)),		  
-						  success: function(data){
-							  if(data.code==0){
-								  window.location.href= basePath + "index";
-							  }else{
-								  layer.alert(data.msg, {title: '错误信息'});
-							  }
-						  },
-						  error: function(data) {
-							  layer.alert(data, {title: '错误信息'});
-						  }, 
-						  dataType: 'JSON'
-					});
-					return false;
-				});
-
-			});
-		</script>
 	</body>
+	<script src="<%=basePath%>/static/admin/js/login.js" type="text/javascript" charset="utf-8"></script>
 </html>

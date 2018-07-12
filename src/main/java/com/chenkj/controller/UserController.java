@@ -16,9 +16,15 @@ import com.chenkj.result.ResultBean;
 import com.chenkj.service.impl.UserServiceImpl;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
+	
+	@RequestMapping("/list")
+	public String userlist(){
+		return "admin/user/userlist";
+	}
 	
 	@RequestMapping("/admin/login")
 	public String login(){
@@ -38,7 +44,7 @@ public class UserController {
 		return userService.getUsers();
 	}
 	
-	@RequestMapping(value = "/user/doLogin",method = RequestMethod.POST)
+	@RequestMapping(value = "/doLogin",method = RequestMethod.POST)
 	@ResponseBody
 	public ResultBean<String> doLogin(HttpServletRequest req){
 		ResultBean<String> result = new ResultBean<String>("success");
