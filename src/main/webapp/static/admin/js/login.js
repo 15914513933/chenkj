@@ -2,6 +2,7 @@ layui.use(['form'], function() {
 	var form = layui.form;
     var layer = layui.layer;				
 	form.on('submit(login)', function(data) {
+		data.field.password = CryptoJS.SHA256(data.field.checkCode) + CryptoJS.SHA256(data.field.password);
 		$.ajax({
 			  type: 'POST',
 			  url: basePath+'/public/doLogin',
@@ -20,7 +21,6 @@ layui.use(['form'], function() {
 		});
 		return false;
 	});
-	
 	$('#checkCode').click(function(){
 		this.src = basePath + "/public/checkCode?c="+Math.random();
 	})

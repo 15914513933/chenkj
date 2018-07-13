@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class UserController {
 			return result;
 		}
 		User loginUser = userService.checkUser(user);
-		if(loginUser==null){
+		if(loginUser==null||user.getPassword().equals(DigestUtils.sha256Hex(session_checkcode)+loginUser.getPassword())){
 			result.setMsg("账号或密码错误！");
 			return result;
 		}else{

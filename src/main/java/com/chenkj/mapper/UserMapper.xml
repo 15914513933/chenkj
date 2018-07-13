@@ -12,6 +12,6 @@
     </select>
     
     <select id="checkUser" resultType="com.chenkj.model.User">
-    	select * from tuser where userid = #{userid} and password = #{password}
+    	select * from tuser where userid = #{userid} 
     </select>
 </mapper> 
