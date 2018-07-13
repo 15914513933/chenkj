@@ -15,6 +15,8 @@ import com.chenkj.model.User;
 import com.chenkj.result.ResultBean;
 import com.chenkj.service.impl.UserServiceImpl;
 import com.chenkj.util.CheckCodeUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Controller
 public class UserController {
@@ -33,14 +35,15 @@ public class UserController {
 		String session_checkcode = (String)session.getAttribute(CheckCodeUtil.CHECKCODE_SESSION);
 		if(!session_checkcode.equals(checkCode)){
 			result.setMsg("验证码错误！");
+			return result;
+		}
+		User loginUser = userService.checkUser(user);
+		if(loginUser==null){
+			result.setMsg("账号或密码错误！");
+			return result;
 		}else{
-			User loginUser = userService.checkUser(user);
-			if(loginUser==null){
-				result.setMsg("账号或密码错误！");
-			}else{
-				session.setAttribute("USER_SESSION",loginUser);
-				session.removeAttribute(CheckCodeUtil.CHECKCODE_SESSION);
-			}
+			session.setAttribute("USER_SESSION",loginUser);
+			session.removeAttribute(CheckCodeUtil.CHECKCODE_SESSION);
 		}
 		return result;
 	}
@@ -56,10 +59,13 @@ public class UserController {
 		return "admin/user/userlist";
 	}
 	
-	@RequestMapping("/usergetUsers")
+	@RequestMapping("/user/getUsers")
 	@ResponseBody
-	public List<User> getUsers(){
-		return userService.getUsers();
+	public ResultBean<PageInfo<User>> getUsers(int pageNum,int pageSize){
+		PageHelper.startPage(pageNum, pageSize);
+		List<User> users = userService.getUsers();
+		PageInfo<User> pageInfo =new PageInfo<User>(users);
+		return new ResultBean<PageInfo<User>>(pageInfo);
 	}
 	
 }

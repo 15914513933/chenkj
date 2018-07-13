@@ -41,7 +41,6 @@ public class CheckCodeUtil {
             graphics.drawLine(x, y, x + xl, y + yl);
         }
         String resultCode = getRandomCode();
-        System.out.println(resultCode);
         for (int i = 0; i < resultCode.length(); i++) {
             // 设置字体颜色
             graphics.setColor(Color.BLACK);
