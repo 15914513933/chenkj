@@ -1,6 +1,5 @@
 package com.chenkj.controller;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,20 +19,6 @@ public class IndexController {
 		User user = (User)session.getAttribute("USER_SESSION");
 		req.setAttribute("menulist", menuService.getMenus());
 		req.setAttribute("userInfo", user);
-		Cookie[] cookies = req.getCookies();
-		/*if(cookies.length>0){
-	　　　　   for (Cookie cookie : cookies) {
-	                String name = cookie.getName();
-	                if(name.equals("id")){
-	                	System.out.println(cookie.getValue());
-	                }
-	            }
-	        }*/
-		if(cookies.length>0){
-			 for (Cookie cookie : cookies) {
-	             System.out.println(cookie.getName()+":"+cookie.getValue());
-			 }
-		}
 		return "admin/index";
 	}
 	

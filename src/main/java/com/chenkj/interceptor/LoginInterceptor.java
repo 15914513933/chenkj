@@ -15,7 +15,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
         String uri = request.getRequestURI().toLowerCase();
-        if (uri.indexOf("login") >= 0) {
+        if (uri.indexOf("public") >= 0) {
             return true;
         }
         HttpSession session = request.getSession();

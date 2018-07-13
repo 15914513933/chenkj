@@ -22,9 +22,10 @@ layui.use(['element','layer'], function(){
 			
 		}
 	});
-	$("#logout").click(function(){
+	$('#logout').click(function(){
 		layer.msg('确认退出？', {
 			time: 0,
+			shade: 0.2,
 	        btn: ['退出', '取消'],
 	        success: function(layero){
 	            var btn = layero.find('.layui-layer-btn');

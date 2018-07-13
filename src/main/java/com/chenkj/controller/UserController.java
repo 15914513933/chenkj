@@ -2,7 +2,6 @@ package com.chenkj.controller;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -15,43 +14,49 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.chenkj.model.User;
 import com.chenkj.result.ResultBean;
 import com.chenkj.service.impl.UserServiceImpl;
+import com.chenkj.util.CheckCodeUtil;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
-	@RequestMapping("/login")
+	@RequestMapping("/public/login")
 	public String login(HttpSession session){
 		return "admin/login";
 	}
 	
-	@RequestMapping(value = "/doLogin",method = RequestMethod.POST)
+	@RequestMapping(value = "/public/doLogin",method = RequestMethod.POST)
 	@ResponseBody
-	public ResultBean<String> doLogin(User user,HttpSession session,HttpServletResponse resp){
+	public ResultBean<String> doLogin(User user,HttpSession session,HttpServletResponse resp,String checkCode){
 		ResultBean<String> result = new ResultBean<String>("success");
-		User loginUser = userService.checkUser(user);
-		if(loginUser==null){
-			result.setMsg("账号或密码错误！");
+		String session_checkcode = (String)session.getAttribute(CheckCodeUtil.CHECKCODE_SESSION);
+		if(!session_checkcode.equals(checkCode)){
+			result.setMsg("验证码错误！");
 		}else{
-			session.setAttribute("USER_SESSION",loginUser);
+			User loginUser = userService.checkUser(user);
+			if(loginUser==null){
+				result.setMsg("账号或密码错误！");
+			}else{
+				session.setAttribute("USER_SESSION",loginUser);
+				session.removeAttribute(CheckCodeUtil.CHECKCODE_SESSION);
+			}
 		}
 		return result;
 	}
 	
-	@RequestMapping("/logout")
+	@RequestMapping("/user/logout")
 	public String logout(HttpSession session){
 		session.invalidate();
-		return "redirect:/user/login";
+		return "redirect:/public/login";
 	}
 	
-	@RequestMapping("/list")
+	@RequestMapping("/user/list")
 	public String userlist(){
 		return "admin/user/userlist";
 	}
 	
-	@RequestMapping("getUsers")
+	@RequestMapping("/usergetUsers")
 	@ResponseBody
 	public List<User> getUsers(){
 		return userService.getUsers();
