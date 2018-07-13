@@ -39,6 +39,17 @@
 			<div class="main-layout-container">
 				<!--头部-->
 				<div class="main-layout-header">
+					<div class="menu-btn" id="hideBtn">
+						<a href="javascript:;" title="隐藏菜单">
+							<span class="iconfont">&#xe60e;</span>
+						</a>
+					</div>
+					<ul class="layui-nav" lay-filter="rightNav">
+					  <li class="layui-nav-item">
+					    <a href="javascript:;" data-url="" data-id='' data-text="个人信息">${userInfo.name }</a>
+					  </li>
+					  <li class="layui-nav-item"><a href="javascript:;" id="logout">退出</a></li>
+					</ul>
 				</div>
 				<!--主体内容-->
 				<div class="layui-tab layui-tab-brief main-layout-tab" lay-filter="tab" lay-allowClose="true" lay-filter="demo" >
@@ -52,5 +63,5 @@
 			</div>
 		</div>
 	</body>
-	<script type="text/javascript" src="<%=basePath%>/static/admin/js/index.js"></script>
+	<script type="text/javascript" src="<%=basePath%>/static/admin/js/index.js?v=2"></script>
 </html>

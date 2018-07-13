@@ -10,4 +10,8 @@
     <select id="getUsers" resultType="com.chenkj.model.User">
     	select * from tuser
     </select>
+    
+    <select id="checkUser" resultType="com.chenkj.model.User">
+    	select * from tuser where userid = #{userid} and password = #{password}
+    </select>
 </mapper> 

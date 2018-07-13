@@ -2,6 +2,7 @@ package com.chenkj.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getUsers() {
 		return userMapper.getUsers();
+	}
+
+	@Override
+	public User checkUser(User user) {
+		user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
+		return userMapper.checkUser(user);
 	}
 
 }

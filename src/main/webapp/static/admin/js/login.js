@@ -5,10 +5,10 @@ layui.use(['form'], function() {
 					$.ajax({
 						  type: 'POST',
 						  url: basePath+'/user/doLogin',
-						  data: JSON.stringify(JSON.stringify(data.field)),		  
+						  data: data.field,		  
 						  success: function(data){
 							  if(data.code==0){
-								  window.location.href= basePath + "index";
+								  window.location.href= basePath + "/index";
 							  }else{
 								  layer.alert(data.msg, {title: '错误信息'});
 							  }

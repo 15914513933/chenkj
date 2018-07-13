@@ -52,3 +52,38 @@
 .iframe {
     border: 0;
 }
+.main-layout-header .menu-btn {
+    float: left;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+/* .main-layout-header a {
+    text-decoration: none;
+}
+.main-layout-header .menu-btn .iconfont {
+    font-size: 20px;
+    color: #444c63;
+}
+.iconfont {
+    font-family: "iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+} */
+
+.main-layout-header .layui-nav {
+    float: right;
+    padding: 0;
+    background: transparent;
+}
+.main-layout-header .layui-nav li {
+    border-left: 1px solid #f2f3f5;
+}
+.main-layout-header .layui-nav-item a{
+	color:#777;
+}
+.main-layout-header .layui-nav-item a:hover{
+	color:#777;
+}

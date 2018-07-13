@@ -10,4 +10,5 @@ import com.chenkj.model.User;
 public interface UserMapper {
 	void insertUser(User user);
 	List<User> getUsers();
+	User checkUser(User user);
 }
