@@ -3,3 +3,13 @@
     padding: 20px;
     margin: 0;
 }
+
+.label-small{
+	width:30px!important;
+}
+.label-medium{
+	width:60px!important;
+}
+.label-big{
+	width:80px!important;
+}

@@ -3,21 +3,21 @@ html {
   overflow: hidden;
 }
 body {
-  background: url("../images/login/login_line.jpg") left center repeat-x;
+  /* background: url("../images/login/login_line.jpg") left center repeat-x; */
   height: 100%;
 }
-/*移除表单填充色*/
+/*绉婚櫎琛ㄥ崟濉厖鑹�*/
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #ececec inset;
 }
-/*按钮移上去颜色*/
+/*鎸夐挳绉讳笂鍘婚鑹�*/
 .layui-btn-primary:hover {
   border-color: #1E9FFF;
   color: #333;
 }
-/*页面背景色*/
+/*椤甸潰鑳屾櫙鑹�*/
 .m-login-bg {
-  background: url("../images/login/login_bg.png") left center repeat-x;
+  /* background: url("../images/login/login_bg.png") left center repeat-x; */
   height: 100%;
 }
 .m-login {
