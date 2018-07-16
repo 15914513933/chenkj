@@ -26,7 +26,7 @@
 								<input type="text" name="checkCode" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
 							</div>
 							<div class="layui-inline">
-								<img id="checkCode" class="check-code-img"  src="<%=basePath%>/public/checkCode" />
+								<img id="checkCode" class="check-code-img" style="cursor: pointer;" src="<%=basePath%>/public/checkCode" />
 							</div>
 						</div>
 						<div class="layui-form-item m-login-btn">

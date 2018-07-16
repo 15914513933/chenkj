@@ -1,5 +1,6 @@
 package com.chenkj.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,10 +35,10 @@ public class UserController {
 	public ResultBean<String> doLogin(User user,HttpSession session,HttpServletResponse resp,String checkCode){
 		ResultBean<String> result = new ResultBean<String>("success");
 		String session_checkcode = (String)session.getAttribute(CheckCodeUtil.CHECKCODE_SESSION);
-		if(!session_checkcode.equals(checkCode)){
+		/*if(!session_checkcode.equals(checkCode)){
 			result.setMsg("验证码错误！");
 			return result;
-		}
+		}*/
 		User loginUser = userService.checkUser(user);
 		if(loginUser==null||user.getPassword().equals(DigestUtils.sha256Hex(session_checkcode)+loginUser.getPassword())){
 			result.setMsg("账号或密码错误！");
@@ -62,11 +63,11 @@ public class UserController {
 	
 	@RequestMapping("/user/getUsers")
 	@ResponseBody
-	public ResultBean<PageInfo<User>> getUsers(int pageNum,int pageSize){
+	public ResultBean<List<User>> getUsers(int pageNum,int pageSize){
 		PageHelper.startPage(pageNum, pageSize);
 		List<User> users = userService.getUsers();
 		PageInfo<User> pageInfo =new PageInfo<User>(users);
-		return new ResultBean<PageInfo<User>>(pageInfo);
+		return new ResultBean<List<User>>(pageInfo.getList(),pageInfo.getTotal());
 	}
 	
 }

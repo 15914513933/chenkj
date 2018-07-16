@@ -1,6 +1,7 @@
 package com.chenkj.result;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ResultBean<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -9,6 +10,7 @@ public class ResultBean<T> implements Serializable {
 	private String msg = "success";
 	private int code = SUCCESS;
 	private T data;
+	private long total = 0L;
 	public ResultBean(){
 		super();
 	}
@@ -16,6 +18,15 @@ public class ResultBean<T> implements Serializable {
 		super();
 		this.data = data;
 		this.code = SUCCESS;
+		if(data instanceof List){
+			total = ((List<?>)data).size();
+		}
+	}
+	public ResultBean(T data,long total){
+		super();
+		this.data = data;
+		this.code = SUCCESS;
+		this.total = total;
 	}
 	public String getMsg() {
 		return msg;
@@ -35,6 +46,12 @@ public class ResultBean<T> implements Serializable {
 	}
 	public void setData(T data) {
 		this.data = data;
+	}
+	public long getTotal() {
+		return total;
+	}
+	public void setTotal(long total) {
+		this.total = total;
 	}
 	
 	
