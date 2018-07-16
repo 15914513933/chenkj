@@ -11,15 +11,15 @@
 				<div class="layui-form-item">
 				    <label class="layui-form-label label-small label-pl">账号</label>
 				    <div class="layui-input-inline">
-				        <input type="text" name="userid" autocomplete="off" placeholder="请输入账号" class="layui-input">
+				        <input id="userid" type="text" name="userid" autocomplete="off" placeholder="请输入账号" class="layui-input">
 				    </div>
 				    <label class="layui-form-label label-small label-pl">姓名</label>
 				    <div class="layui-input-inline">
-				        <input type="text" name="name" autocomplete="off" placeholder="请输入名字" class="layui-input">
+				        <input id="name" type="text" name="name" autocomplete="off" placeholder="请输入名字" class="layui-input">
 				    </div>
 				    <label class="layui-form-label label-small label-pl">性别</label>
 				    <div class="layui-input-inline">
-				      <select name="sex">
+				      <select id="sex" name="sex">
 				        <option value="">请选择性别</option>
 				        <option value="1">男</option>
 				        <option value="2">女</option>
@@ -28,12 +28,12 @@
 				    </div>
 				</div>
 			</form>
-			<div class="layui-btn-group">
-			<button class="layui-btn layui-btn-sm" data-type="reload">查询</button>
-			  <button class="layui-btn layui-btn-sm">添加</button>
-			  <button class="layui-btn layui-btn-sm">批量删除</button>
-			  <button class="layui-btn layui-btn-sm">导入</button>
-			  <button class="layui-btn layui-btn-sm">导出</button>
+			<div class="layui-btn-group operateBtn">
+			  <button class="layui-btn layui-btn-sm" data-type="search">查询</button>
+			  <button class="layui-btn layui-btn-sm" data-type="add">添加</button>
+			  <button class="layui-btn layui-btn-sm" data-type="batdel">批量删除</button>
+			  <button class="layui-btn layui-btn-sm" data-type="importuser">导入</button>
+			  <button class="layui-btn layui-btn-sm" data-type="exportuser">导出</button>
 			</div>
 			<table class="layui-hide" id="user-data-table" lay-filter="user"></table>
 		</div>
@@ -52,7 +52,7 @@
 		    elem: '#user-data-table',
 		    url:basePath + '/user/getUsers',
 		    cellMinWidth: 80,
-		    id:'userReload',
+		    id:'userTable',
 		    cols: [[
 			  {checkbox: true, fixed: true},
 		      {field:'userid', width:'15%', title: '账号'},
@@ -77,12 +77,12 @@
 		   page: true
 		  });
 		  
-		table.on('toolbar(user)', function(obj){
+		table.on('tool(user)', function(obj){
 		    var data = obj.data;
 		    if(obj.event === 'detail'){
-		      layer.msg('ID：'+ data.id + ' 的查看操作');
+		      layer.msg('userid：'+ data.userid );
 		    } else if(obj.event === 'del'){
-		      layer.confirm('真的删除行么', function(index){
+		      layer.confirm('确定删除？', function(index){
 		        obj.del();
 		        layer.close(index);
 		      });
@@ -107,6 +107,70 @@
 				  return '冻结';
 			  }
 		  }
+		  
+		  var active = {
+		    search: function(){ 
+		    	var paramMap = {};
+		    	var userid = $('#userid').val();
+		    	var name = $('#name').val();
+		    	var sex = $('#sex').find("option:selected").val();
+		    	if(userid!=''){
+		    		paramMap.userid = userid;
+		    	}
+		    	if(name!=''){
+		    		paramMap.name = name;
+		    	}
+		    	if(sex!=''){
+		    		paramMap.sex = sex;
+		    	}
+		        table.reload('userTable', {
+		          page: {
+		            curr: 1 //重新从第 1 页开始
+		          }
+		          ,where: {
+		            	params: JSON.stringify(paramMap)
+		          }
+		        });
+		    },
+		    add: function(){
+		    	var that = this; 
+		        //多窗口模式，层叠置顶
+		        layer.open({
+		          type: 0 
+		          ,title: '添加用户'
+		          ,area: ['500px', '400px']
+		          ,shade: 0
+		          ,resize:false
+		          ,content: '添加用户'
+		          ,btn: ['保存', '关闭'] 
+		          ,yes: function(){
+		            $(that).click(); 
+		          }
+		          ,btn2: function(){
+		            layer.closeAll();
+		          }
+		          ,zIndex: layer.zIndex //重点1
+		          ,success: function(layero){
+		            layer.setTop(layero); //重点2
+		          }
+		        });
+		    },
+		    batdel: function(){
+		      var checkStatus = table.checkStatus('userTable');
+		      var datas = checkStatus.data.userid;
+		    },
+		    importuser: function(){
+		      
+		    },
+		    exportuser: function(){
+			      
+		    }
+		  };
+		  
+		  $('.operateBtn .layui-btn').on('click', function(){
+			    var type = $(this).data('type');
+			    active[type] ? active[type].call(this) : '';
+		  });
 		  
 	});
 

@@ -1,6 +1,5 @@
 package com.chenkj.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.chenkj.model.User;
 import com.chenkj.result.ResultBean;
 import com.chenkj.service.impl.UserServiceImpl;
@@ -43,6 +43,9 @@ public class UserController {
 		if(loginUser==null||user.getPassword().equals(DigestUtils.sha256Hex(session_checkcode)+loginUser.getPassword())){
 			result.setMsg("账号或密码错误！");
 			return result;
+		}else if(loginUser.getStatus()==-1){
+			result.setMsg("账号已被冻结，请联系管理员！");
+			return result;
 		}else{
 			session.setAttribute("USER_SESSION",loginUser);
 			session.removeAttribute(CheckCodeUtil.CHECKCODE_SESSION);
@@ -63,9 +66,28 @@ public class UserController {
 	
 	@RequestMapping("/user/getUsers")
 	@ResponseBody
-	public ResultBean<List<User>> getUsers(int pageNum,int pageSize){
+	public ResultBean<List<User>> getUsers(String params,int pageNum,int pageSize){
+		JSONObject paramsObject = JSONObject.parseObject(params);
+		String userid = null;
+		String name = null;
+		int sex = -1;
+		if(paramsObject!=null){
+			if(paramsObject.containsKey("userid")){
+				userid = paramsObject.getString("userid");
+			}
+			if(paramsObject.containsKey("name")){
+				name = paramsObject.getString("name");
+			}
+			if(paramsObject.containsKey("sex")){
+				sex = paramsObject.getIntValue("sex");
+			}
+		}
 		PageHelper.startPage(pageNum, pageSize);
-		List<User> users = userService.getUsers();
+		User user = new User();
+		user.setUserid(userid);
+		user.setName(name);
+		user.setSex(sex);
+		List<User> users = userService.getUsers(user);
 		PageInfo<User> pageInfo =new PageInfo<User>(users);
 		return new ResultBean<List<User>>(pageInfo.getList(),pageInfo.getTotal());
 	}

@@ -9,6 +9,18 @@
     <!--resultType resultMap不能同时使用  -->
     <select id="getUsers" resultType="com.chenkj.model.User">
     	select * from tuser
+    	<where>
+         <if test="userid!=null">
+            and userid=#{userid}
+         </if>
+         <if test="name!=null">
+            and name=#{name}
+         </if>
+         <if test="sex >-1">
+            and sex=#{sex}
+         </if>
+
+      </where>
     </select>
     
     <select id="checkUser" resultType="com.chenkj.model.User">

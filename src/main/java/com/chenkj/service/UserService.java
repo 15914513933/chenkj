@@ -6,6 +6,6 @@ import com.chenkj.model.User;
 
 public interface UserService {
 	User insertUser(User user);
-	List<User> getUsers();
+	List<User> getUsers(User user);
 	User checkUser(User user);
 }
