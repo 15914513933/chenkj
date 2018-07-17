@@ -64,6 +64,45 @@ public class UserController {
 		return "admin/user/userlist";
 	}
 	
+	@RequestMapping("/page/user/add")
+	public String addUser(){
+		return "admin/user/useradd";
+	}
+	
+	@RequestMapping(value = "/user/addUser",method = RequestMethod.POST)
+	@ResponseBody
+	public ResultBean<String> addUser(User user){
+		ResultBean<String> result = new ResultBean<String>();
+		try{
+			if(userService.checkUser(user)!=null){
+				result.setMsg("账号已存在！");
+			}else{
+				boolean isSuccess = userService.addUser(user);
+				if(!isSuccess){
+					result.setMsg("保存失败！");
+				}
+			}
+		}catch(Exception e){
+			result.setMsg(e.getMessage());
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/user/delUsers",method = RequestMethod.POST)
+	@ResponseBody
+	public ResultBean<String> delUsers(String userid){
+		ResultBean<String> result = new ResultBean<String>();
+		try{
+			String[] userids = new String[]{userid};
+			if(!userService.delUsers(userids)){
+				result.setMsg("删除失败！");
+			}
+		}catch(Exception e){
+			result.setMsg(e.getMessage());
+		}
+		return result;
+	}
+	
 	@RequestMapping("/user/getUsers")
 	@ResponseBody
 	public ResultBean<List<User>> getUsers(String params,int pageNum,int pageSize){

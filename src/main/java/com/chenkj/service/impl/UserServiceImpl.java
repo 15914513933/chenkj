@@ -15,9 +15,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper userMapper;
 	@Override
-	public User insertUser(User user) {
-		userMapper.insertUser(user);
-		return user;
+	public boolean addUser(User user) throws Exception{
+		if(userMapper.insertUser(user)>0){
+			return true;
+		}
+		return false;
 	}
 	
 	@Override
@@ -27,8 +29,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User checkUser(User user) {
-		user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
+		//user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
 		return userMapper.checkUser(user);
+	}
+
+	@Override
+	public boolean delUsers(String[] userids) throws Exception {
+		return userMapper.delUsers(userids);
 	}
 
 }

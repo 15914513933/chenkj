@@ -3,7 +3,7 @@
    
 <mapper namespace="com.chenkj.mapper.UserMapper">  
     <insert id="insertUser">
-        insert into tuser(userid,password) values(#{userid},#{password})
+        insert into tuser(userid,password,name,sex,tel,email) values(#{userid},#{password},#{name},#{sex},#{tel},#{email})
     </insert>
     
     <!--resultType resultMap不能同时使用  -->
@@ -26,4 +26,12 @@
     <select id="checkUser" resultType="com.chenkj.model.User">
     	select * from tuser where userid = #{userid} 
     </select>
+    
+    <delete id="delUsers">
+		delete from tuser where userid in
+		<foreach collection="array" item="userid" index="no" open="("
+			separator="," close=")">
+			#{userid}
+		</foreach>
+	</delete>
 </mapper> 

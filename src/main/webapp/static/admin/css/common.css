@@ -19,3 +19,11 @@
 .hidden{
 	display:none;
 }
+.add-user{
+	margin-top: 15px;
+    margin-left: 65px;
+}
+.error-msg{
+	margin-left:60px;
+    color: #FF0000;
+}
