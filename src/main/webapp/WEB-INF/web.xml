@@ -42,5 +42,9 @@
 	    <servlet-name>default</servlet-name>
 	    <url-pattern>*.js,*.css,*.jpg,*.png,*.woff,*.ttf</url-pattern>
 	</servlet-mapping>
+	
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
 
 </web-app>

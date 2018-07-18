@@ -249,7 +249,42 @@ layui.use(['form','table'], function(){
 			      });
 		    },
 		    importuser: function(){
-		      
+		    	layer.open({
+			          type: 2 
+			          ,title: '导入用户'
+			          ,area: ['400px', '300px']
+			          ,shade: 0
+			          ,resize:false
+			          ,shade:0.1
+			          ,content: basePath + "/page/user/import"
+			          ,btn: ['导入', '关闭'] 
+			          ,yes: function(index,layero){
+			        	  var page_import = layer.getChildFrame('body',index);
+				          var importId = page_import.find('#importId').val();
+				          alert(importId)
+			            /*$.ajax({
+				  			  type: 'POST',
+				  			  url: basePath+'/user/addUser',
+				  			  data: new_user,		  
+				  			  success: function(data){
+				  				  if(data.code==0){
+				  					 layer.msg('保存成功！')
+				  					 layer.close(index);
+				  					 reload();
+				  				  }else{
+				  					 err.text(data.msg)
+				  				  }
+				  			  },
+				  			  error: function(data) {
+				  				  layer.msg(data,{time:1000});
+				  			  }, 
+				  			  dataType: 'JSON'
+			  			  }); */
+			          }
+			          ,success: function(layero){
+			            layer.setTop(layero);
+			          }
+			        });
 		    },
 		    exportuser: function(){
 			      

@@ -48,8 +48,8 @@
 					  <li class="layui-nav-item">
 					    <a href="javascript:;" data-url="" data-id='' data-text="个人信息">${userInfo.name }</a>
 					     <dl class="layui-nav-child">
-					      <dd><a href="">个人信息</a></dd>
-					      <dd><a href="">修改密码</a></dd>
+					      <dd><a href="javascript:;" data-url="/page/user/myInfo?userid=${userInfo.userid}" data-id="my" data-text="个人信息">个人信息</a></dd>
+					      <dd><a href="javascript:;">修改密码</a></dd>
 					    </dl>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:;" id="logout">退出</a></li>
@@ -68,4 +68,5 @@
 		</div>
 	</body>
 	<script type="text/javascript" src="<%=basePath%>/static/admin/js/index.js?v=2"></script>
+	
 </html>

@@ -1,10 +1,8 @@
 package com.chenkj.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Timestamp;
 
-import javax.crypto.KeyGenerator;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.chenkj.model.FUploadRecord;
@@ -27,9 +26,10 @@ public class FileUploadController {
 	private FileUploadServiceImpl fileUploadService;
 	
 	@RequestMapping(value="/upload",method=RequestMethod.POST)
-    public ResultBean<String> upload(HttpServletRequest req,@RequestParam("fsection") String fsection,
+	@ResponseBody
+    public ResultBean<FUploadRecord> upload(HttpServletRequest req,@RequestParam("fsection") String fsection,
     		@RequestParam("fitem") String fitem,@RequestParam("file") MultipartFile file) {
-		ResultBean<String> result = new ResultBean<String>();
+		ResultBean<FUploadRecord> result = new ResultBean<FUploadRecord>();
 		if(!file.isEmpty()) {
 			if(fsection==null||fsection.equals("")){
 				fsection = "default";
@@ -39,14 +39,14 @@ public class FileUploadController {
 			}
 			String id = KeyGeneratorUtil.generateKey();
 			String rootPath = FUploadRecord.FILE_ROOT_PATH ;
-			String path = File.separator + fsection + File.separator + fitem;
+			String path = File.separator + fsection + File.separator + fitem +File.separator;
 			String fname = file.getOriginalFilename();
 			String fext = fname.substring(fname.lastIndexOf(".")+1, fname.length());
-			File filepath = new File(path);
-			if (!filepath.getParentFile().exists()) { 
-				filepath.getParentFile().mkdirs();
+			File filepath = new File(rootPath+path);
+			if (!filepath.exists()) { 
+				filepath.mkdirs();
 			}
-			String fpath = path + File.separator + id + "." + fext;
+			String fpath = path + id + "." + fext;
 			try {
 				file.transferTo(new File(rootPath + fpath));
 			} catch (Exception e) {
@@ -66,7 +66,7 @@ public class FileUploadController {
 			uploadRecord.setCreator(user.getUserid());
 			
 			if(fileUploadService.saveUploadRecord(uploadRecord)){
-				result.setData(id);
+				result.setData(uploadRecord);
 			}else{
 				new File(rootPath + fpath).delete();
 				result.setMsg("上传失败！");

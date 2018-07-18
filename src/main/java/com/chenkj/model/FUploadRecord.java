@@ -3,7 +3,7 @@ package com.chenkj.model;
 import java.sql.Timestamp;
 
 public class FUploadRecord {
-	public static String FILE_ROOT_PATH="e:/file/chenkj";
+	public static String FILE_ROOT_PATH="d:/file/chenkj";
 	private String id;
 	private String fsection;
 	private String fitem;

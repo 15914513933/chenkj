@@ -45,4 +45,9 @@
 	</body>
 	<script src="<%=basePath%>/static/admin/js/login.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%=basePath%>/CryptoJS/rollups/sha256.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	    if (window != top) {
+	        top.location.href = basePath + '/public/login'; 
+	    }
+	</script>
 </html>

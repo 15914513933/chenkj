@@ -71,11 +71,22 @@ public class UserController {
 		return "admin/user/useradd";
 	}
 	
+	@RequestMapping("/page/user/myInfo")
+	public String myInfo(@RequestParam(value = "userid") String userid,HttpServletRequest req){
+		List<User> users = userService.getUsers(new User(userid));
+		req.setAttribute("myInfo", users.get(0));
+		return "admin/user/myinfo";
+	}
+	
 	@RequestMapping("/page/user/edit")
 	public String editUser(@RequestParam(value = "userid") String userid,HttpServletRequest req){
 		List<User> users = userService.getUsers(new User(userid));
 		req.setAttribute("userInfo", users.get(0));
 		return "admin/user/useredit";
+	}
+	@RequestMapping("/page/user/import")
+	public String importUser(){
+		return "admin/user/userimport";
 	}
 	
 	@RequestMapping(value = "/user/addUser",method = RequestMethod.POST)
