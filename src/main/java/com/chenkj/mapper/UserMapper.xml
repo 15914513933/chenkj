@@ -34,4 +34,15 @@
 			#{userid}
 		</foreach>
 	</delete>
+	
+	<update id="editUser"  parameterType="com.chenkj.model.User">
+ 		update tuser
+		 <trim prefix="set" suffixOverrides=",">
+		  <if test="name!=null">name=#{name},</if>
+		  <if test="sex>-1">sex=#{sex},</if>
+		  <if test="email!=null">email=#{email},</if>
+		  <if test="tel!=null">tel=#{tel},</if>
+		 </trim>
+		 WHERE userid=#{userid}
+</update>
 </mapper> 

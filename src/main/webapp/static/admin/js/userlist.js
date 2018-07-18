@@ -37,20 +37,17 @@ layui.use(['form','table'], function(){
 		    } else if(obj.event === 'del'){
 		      var userids = new Array();
 		      userids[0] = data.userid;
-		      
-		      var a = {};
-		      a.userids = userids;
-		      
 		      layer.confirm('确定删除？', function(index){
 		        $.ajax({
 		  			  type: 'POST',
 		  			  url: basePath+'/user/delUsers',
-		  			  data: {userid:data.userid},		  
+		  			  data: {userids:userids},		  
 		  			  success: function(data){
 		  				  if(data.code==0){
 		  					 layer.msg('删除成功！')
 		  					 layer.close(index);
-		  					 obj.del();
+		  					 //obj.del();
+		  					 reload();
 		  				  }else{
 		  					 layer.msg(data.msg);
 		  				  }
@@ -62,10 +59,61 @@ layui.use(['form','table'], function(){
 	  			  }); 
 		      });
 		    } else if(obj.event === 'edit'){
-		      layer.alert('编辑行：<br>'+ JSON.stringify(data))
+		      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+		      layer.open({
+		          type: 2 
+		          ,title: '编辑用户'
+		          ,area: ['550px', '470px']
+		          ,shade: 0
+		          ,resize:false
+		          ,shade:0.1
+		          ,content: basePath + "/page/user/edit?userid="+data.userid
+		          ,btn: ['保存', '关闭'] 
+		          ,yes: function(index,layero){
+		            var page_add = layer.getChildFrame('body',index);
+		            var edit_userid = page_add.find('#edit_userid').val();
+		            var edit_password = page_add.find('#edit_password').val();
+		            var edit_name = page_add.find('#edit_name').val();
+		            var edit_tel = page_add.find('#edit_tel').val();
+		            var edit_email = page_add.find('#edit_email').val();
+		            var edit_sex = page_add.find("input[name='sex']:checked").val();
+		            var errorMsg = '';
+		            var err = page_add.find('.error-msg');
+		            if(edit_name==''){
+		            	err.text('姓名不能为空!');return;
+		            }
+		            var edit_user={};
+		            edit_user.userid = edit_userid;
+		            edit_user.name = edit_name;
+		            edit_user.tel = edit_tel;
+		            edit_user.email = edit_email;
+		            edit_user.sex = edit_sex;
+		            $.ajax({
+			  			  type: 'POST',
+			  			  url: basePath+'/user/editUser',
+			  			  data: edit_user,		  
+			  			  success: function(data){
+			  				  if(data.code==0){
+			  					 layer.msg('保存成功！')
+			  					 layer.close(index);
+			  					 reload();
+			  				  }else{
+			  					 err.text(data.msg)
+			  				  }
+			  			  },
+			  			  error: function(data) {
+			  				  layer.msg(data,{time:1000});
+			  			  }, 
+			  			  dataType: 'JSON'
+		  			  }); 
+		          }
+		          ,success: function(layero){
+		            layer.setTop(layero);
+		          }
+		        });
 		    }
 		  });
-		function sexText(value){
+		  function sexText(value){
 			  if(value==1){
 				  return '男';
 			  }else if(value==2){
@@ -163,15 +211,42 @@ layui.use(['form','table'], function(){
 			  			  dataType: 'JSON'
 		  			  }); 
 		          }
-		          ,zIndex: layer.zIndex //重点1
 		          ,success: function(layero){
-		            layer.setTop(layero); //重点2
+		            layer.setTop(layero);
 		          }
 		        });
 		    },
 		    batdel: function(){
 		      var checkStatus = table.checkStatus('userTable');
-		      var datas = checkStatus.data.userid;
+		      var datas = checkStatus.data;
+		      if(datas.length<=0){
+		    	  layer.msg('请选择删除记录！');
+		    	  return;
+		      }
+		      var userids = new Array();
+		      datas.forEach(function(e){  
+		    	  userids.push(e.userid)
+		      });
+		      layer.confirm('确定删除？', function(index){
+			        $.ajax({
+			  			  type: 'POST',
+			  			  url: basePath+'/user/delUsers',
+			  			  data: {userids:userids},		  
+			  			  success: function(data){
+			  				  if(data.code==0){
+			  					 layer.msg('删除成功！')
+			  					 layer.close(index);
+			  					 reload();
+			  				  }else{
+			  					 layer.msg(data.msg);
+			  				  }
+			  			  },
+			  			  error: function(data) {
+			  				  layer.msg(data,{time:1000});
+			  			  }, 
+			  			  dataType: 'JSON'
+		  			  }); 
+			      });
 		    },
 		    importuser: function(){
 		      

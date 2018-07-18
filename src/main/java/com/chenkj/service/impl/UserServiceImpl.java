@@ -29,13 +29,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User checkUser(User user) {
-		//user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
 		return userMapper.checkUser(user);
 	}
 
 	@Override
 	public boolean delUsers(String[] userids) throws Exception {
 		return userMapper.delUsers(userids);
+	}
+
+	@Override
+	public boolean editUser(User user) throws Exception {
+		return userMapper.editUser(user);
 	}
 
 }

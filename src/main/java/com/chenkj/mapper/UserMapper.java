@@ -12,4 +12,5 @@ public interface UserMapper {
 	List<User> getUsers(User user);
 	User checkUser(User user);
 	boolean delUsers(String[] userids);
+	boolean editUser(User user);
 }

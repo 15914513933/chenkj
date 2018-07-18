@@ -2,6 +2,7 @@ package com.chenkj.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
@@ -69,6 +71,13 @@ public class UserController {
 		return "admin/user/useradd";
 	}
 	
+	@RequestMapping("/page/user/edit")
+	public String editUser(@RequestParam(value = "userid") String userid,HttpServletRequest req){
+		List<User> users = userService.getUsers(new User(userid));
+		req.setAttribute("userInfo", users.get(0));
+		return "admin/user/useredit";
+	}
+	
 	@RequestMapping(value = "/user/addUser",method = RequestMethod.POST)
 	@ResponseBody
 	public ResultBean<String> addUser(User user){
@@ -88,12 +97,25 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/user/delUsers",method = RequestMethod.POST)
+	@RequestMapping(value = "/user/editUser",method = RequestMethod.POST)
 	@ResponseBody
-	public ResultBean<String> delUsers(String userid){
+	public ResultBean<String> editUser(User user){
 		ResultBean<String> result = new ResultBean<String>();
 		try{
-			String[] userids = new String[]{userid};
+			if(!userService.editUser(user)){
+				result.setMsg("保存失败！");
+			}
+		}catch(Exception e){
+			result.setMsg(e.getMessage());
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/user/delUsers",method = RequestMethod.POST)
+	@ResponseBody
+	public ResultBean<String> delUsers(@RequestParam(value = "userids[]") String[] userids){
+		ResultBean<String> result = new ResultBean<String>();
+		try{
 			if(!userService.delUsers(userids)){
 				result.setMsg("删除失败！");
 			}

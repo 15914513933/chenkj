@@ -47,6 +47,10 @@
 					<ul class="layui-nav" lay-filter="rightNav">
 					  <li class="layui-nav-item">
 					    <a href="javascript:;" data-url="" data-id='' data-text="个人信息">${userInfo.name }</a>
+					     <dl class="layui-nav-child">
+					      <dd><a href="">个人信息</a></dd>
+					      <dd><a href="">修改密码</a></dd>
+					    </dl>
 					  </li>
 					  <li class="layui-nav-item"><a href="javascript:;" id="logout">退出</a></li>
 					</ul>
@@ -54,10 +58,10 @@
 				<!--主体内容-->
 				<div class="layui-tab layui-tab-brief main-layout-tab" lay-filter="tab" lay-allowClose="true" lay-filter="demo" >
 				  <ul class="layui-tab-title">
-					    <li class="layui-this welcome">后台主页</li>
+					    <li class="layui-this welcome">欢迎页面</li>
 					  </ul>
 					  <div class="layui-tab-content">
-					    <div class="layui-tab-item layui-show">后台主页</div>
+					    <div class="layui-tab-item layui-show">Welcome</div>
 					  </div>
 				</div>
 			</div>

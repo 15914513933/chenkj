@@ -4,12 +4,16 @@ public class User {
 	private String userid;
 	private String password;
 	private String name;
-	private int sex;
+	private int sex=-1;
 	private String email;
 	private String tel;
 	private int status;
 	private String icon;
 	public User(){}
+	public User(String userid) {
+		super();
+		this.userid = userid;
+	}
 	public User(String userid, String password) {
 		super();
 		this.userid = userid;
