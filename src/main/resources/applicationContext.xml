@@ -17,7 +17,15 @@
 	<!-- 引入配置文件 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:db.properties" />
+		<!-- <property name="location" value="classpath:db.properties" /> -->
+		
+		<property name="locations">
+			<list>
+				<value>classpath:db.properties</value>
+				<value>classpath:redis.properties</value>
+			</list>
+		</property>
+		
 	</bean>
 
 	<!-- dataSource配置 -->
@@ -53,8 +61,6 @@
 		<property name="basePackage" value="com.chenkj.mapper" />
 	</bean>
 
-
-
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
 	</bean>
@@ -62,5 +68,38 @@
 	<bean id="ehcache"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:ehcache.xml" />
+	</bean>
+	
+	<!-- redis连接池 -->
+    <bean id="jedisConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxActive}"></property>
+        <property name="maxIdle" value="${redis.maxIdle}"></property>
+        <property name="maxWaitMillis" value="${redis.maxWait}"></property>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"></property>
+    </bean>
+    <!-- redis连接工厂 -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${redis.host}"></property>
+        <property name="port" value="${redis.port}"></property>
+        <property name="password" value="${redis.password}"></property>
+        <property name="database" value="${redis.database}"/>
+        <property name="poolConfig" ref="jedisConfig"></property>
+    </bean>
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+    	<property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <!--开启事务-->
+        <property name="enableTransactionSupport" value="true"/>
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+    </bean>
+    
+    <bean id="redisHttpSessionConfiguration"
+	     	class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+	    <property name="maxInactiveIntervalInSeconds" value="600"/>
 	</bean>
 </beans>
