@@ -2,7 +2,9 @@ layui.use(['form'], function() {
 	var form = layui.form;
     var layer = layui.layer;				
 	form.on('submit(login)', function(data) {
-		data.field.password = CryptoJS.SHA256(data.field.checkCode) + CryptoJS.SHA256(data.field.password);
+		debugger;
+		//data.field.password = CryptoJS.SHA256(data.field.checkCode) + CryptoJS.SHA256(data.field.password);
+		data.field.password = CryptoJS.SHA256(data.field.password)+"";
 		$.ajax({
 			  type: 'POST',
 			  url: basePath+'/public/doLogin',

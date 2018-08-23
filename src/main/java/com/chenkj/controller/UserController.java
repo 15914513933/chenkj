@@ -2,11 +2,19 @@ package com.chenkj.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.config.IniSecurityManagerFactory;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.Factory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +32,26 @@ import com.github.pagehelper.PageInfo;
 
 @Controller
 public class UserController {
+	private static Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro-jdbc-realm.ini");
+	private static SecurityManager securityManager = factory.getInstance();
+	static{
+		SecurityUtils.setSecurityManager(securityManager);
+	}
+	
 	@Autowired
 	private UserServiceImpl userService;
 	
 	@RequestMapping("/public/login")
-	public String login(HttpSession session){
+	public String login(HttpServletRequest req,HttpServletResponse resp){
+		
+		/*Cookie[] cookies = req.getCookies();
+		for(Cookie c : cookies){
+			System.out.println(c.getValue());;
+		}*/
+		
+		HttpSession session = req.getSession(true);
+		System.out.println(session.getId());
+		
 		return "admin/login";
 	}
 	
@@ -41,7 +64,7 @@ public class UserController {
 			result.setMsg("验证码错误！");
 			return result;
 		}*/
-		User loginUser = userService.checkUser(user);
+		/*User loginUser = userService.checkUser(user);
 		if(loginUser==null||user.getPassword().equals(DigestUtils.sha256Hex(session_checkcode)+loginUser.getPassword())){
 			result.setMsg("账号或密码错误！");
 			return result;
@@ -51,7 +74,17 @@ public class UserController {
 		}else{
 			session.setAttribute("USER_SESSION",loginUser);
 			session.removeAttribute(CheckCodeUtil.CHECKCODE_SESSION);
-		}
+		}*/
+	    Subject subject = SecurityUtils.getSubject();
+	    UsernamePasswordToken token = new UsernamePasswordToken(user.getUserid(), user.getPassword());
+	    try {
+	        subject.login(token);
+	    } catch (AuthenticationException e) {
+	    	result.setMsg("账号或密码错误！");
+			return result;
+	    }
+	    session.setAttribute("USER_SESSION",user);
+		session.removeAttribute(CheckCodeUtil.CHECKCODE_SESSION);
 		return result;
 	}
 	
