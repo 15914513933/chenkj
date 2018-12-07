@@ -1,6 +1,8 @@
 package com.chenkj.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -85,6 +87,10 @@ public class UserController {
 	    }
 	    session.setAttribute("USER_SESSION",user);
 		session.removeAttribute(CheckCodeUtil.CHECKCODE_SESSION);
+		
+		Map<Object,Object> map = new HashMap<>();
+		Map<Object,Object> map2 = new HashMap<>(map);
+		
 		return result;
 	}
 	
